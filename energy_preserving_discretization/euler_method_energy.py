@@ -1,11 +1,14 @@
+'''オイラー法により得られる離散系のエネルギーをグラフで確認'''
+
 from manim import *
 import numpy as np
 import math
 
+
 config.frame_width = 10
 config.frame_height = 5
 
-
+# オイラー法(陽的)
 def euler_step(x, v, omega, dt):
     x_new = x + v * dt
     v_new = v - omega**2 * x * dt
@@ -57,26 +60,21 @@ class EulerSpring(Scene):
         pathEm = TracedPath(dotEm.get_center, stroke_color=BLUE)
         pathEk = TracedPath(dotEk.get_center, stroke_color=YELLOW)
 
-        # updater（1つだけ）
+        # updater
         def update_system(mob, dt):
             nonlocal x, v, t
-
             x, v = euler_step(x, v, omega, dt)
             t += dt
-
             E = (m*(v**2))/2 + (k*(x**2))/2
             Em = (m*(v**2))/2
             Ek = (k*(x**2))/2
-
             dotE.move_to(ax.c2p(t, E))
             dotEm.move_to(ax.c2p(t, Em))
             dotEk.move_to(ax.c2p(t, Ek))
 
-        # dotEだけにアップデータを付ける
+        # 動かす
         dotE.add_updater(update_system)
-
         self.add(ax, x_label, y_label,
                  pathE, pathEm, pathEk,
                  dotE, dotEm, dotEk)
-
         self.wait(10)
