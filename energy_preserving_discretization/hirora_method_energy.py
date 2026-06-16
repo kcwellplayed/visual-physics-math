@@ -1,3 +1,5 @@
+'''広田の差分化によって得られる離散系のエネルギーをグラフで確認'''
+
 from manim import *
 import numpy as np
 import math
@@ -6,7 +8,7 @@ config.frame_width = 10
 config.frame_height = 5
 
 
-
+# 広田の差分化(陽的)
 def hirota_step(x, v, omega, dt):
     x_new = ((4-(omega*dt)**2)/(4+(omega*dt)**2))*x + ((4*dt)/(4+(omega*dt)**2))*v 
     v_new =  -((4*(omega**2)*dt)/(4+(omega*dt)**2))*x + ((4-(omega*dt)**2)/(4+(omega*dt)**2))*v
@@ -57,7 +59,7 @@ class HirotaSpring(Scene):
         pathEm = TracedPath(dotEm.get_center, stroke_color=BLUE)
         pathEk = TracedPath(dotEk.get_center, stroke_color=YELLOW)
 
-        # updater（1つだけ）
+        # updater
         def update_system(mob, dt):
             nonlocal x, v, t
 
@@ -72,11 +74,9 @@ class HirotaSpring(Scene):
             dotEm.move_to(ax.c2p(t, Em))
             dotEk.move_to(ax.c2p(t, Ek))
 
-        # dotEだけにアップデータを付ける
+        # 動かす
         dotE.add_updater(update_system)
-
         self.add(ax, x_label, y_label,
                  pathE, pathEm, pathEk,
                  dotE, dotEm, dotEk)
-
         self.wait(10)
