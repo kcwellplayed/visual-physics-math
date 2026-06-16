@@ -1,8 +1,12 @@
+'''バネの振動のアニメーション (三角関数解で計算)'''
+
 from manim import *
 import numpy as np
 
+
 config.frame_width = 8
 config.frame_height = 4
+
 
 class SpringOscillation(Scene):
     def construct(self):
@@ -45,7 +49,7 @@ class SpringOscillation(Scene):
         spring_mob = always_redraw(spring)
 
         # おもり
-        rad = 0.5 # お守りの大きさ
+        rad = 0.5 # おもりの半径
         mass = always_redraw(
             lambda: Circle(radius=rad, fill_opacity=1, color=YELLOW)
             .move_to(
@@ -54,8 +58,8 @@ class SpringOscillation(Scene):
             )
         )
 
+        # 動かす
         self.add(wall, floor, spring_mob, mass)
-
         self.play(
             time.animate.set_value(4*PI),
             run_time=6,
